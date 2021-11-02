@@ -1,0 +1,48 @@
+Install-Module AzureRm
+
+Set-ExecutionPolicy Unrestricted
+
+Connect-AzureRmAccount
+
+New-AzureRmResourceGroup -Name 'ps-casadocodigo-rg' -Location 'South Central US'
+
+New-AzureRmSqlServer `
+    -ServerName 'ps-casadocodigo-sql-srv' `
+    -ResourceGroupName 'ps-casadocodigo-rg' `
+    -Location 'South Central US' `
+    -SqlAdministratorCredentials (Get-Credential)
+
+New-AzureRmSqlDatabase `
+    -ResourceGroupName 'ps-casadocodigo-rg' `
+    -ServerName 'ps-casadocodigo-sql-srv' `
+    -DatabaseName 'ps-casadocodigo-sql-bd' `
+    -MaxSizeBytes 50GB `
+    -RequestedServiceObjectiveName "S0"
+
+New-AzureRmSqlServerFirewallRule `
+    -ResourceGroupName 'ps-casadocodigo-rg' `
+    -ServerName 'ps-casadocodigo-sql-srv' `
+    -FirewallRuleName "MaquinaAdministracao" `
+    -StartIpAddress 'xxx.xxx.xxx.xxx' `
+    -EndIpAddress 'xxx.xxx.xxx.xxx'
+
+New-AzureRmAppServicePlan `
+    -Name 'ps-casadocodigo-appserviceplan' `
+    -Location 'South Central US' `
+    -ResourceGroupName 'ps-casadocodigo-rg' `
+    -Tier 'Standard'
+
+New-AzureRmWebApp `
+    -ResourceGroupName 'ps-casadocodigo-rg' `
+    -Name 'pscasadocodigo' `
+    -Location 'South Central US' `
+    -AppServicePlan 'ps-casadocodigo-appserviceplan'
+
+New-AzureRmSqlServerFirewallRule `
+    -ResourceGroupName 'ps-casadocodigo-rg' `
+    -ServerName 'ps-casadocodigo-sql-srv' `
+    -FirewallRuleName "AllowAllWindowsAzureIps" `
+    -StartIpAddress '0.0.0.0' `
+    -EndIpAddress '0.0.0.0'
+
+https://docs.microsoft.com/pt-br/azure/app-service/samples-powershell

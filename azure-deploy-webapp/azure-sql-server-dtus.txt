@@ -1,0 +1,13 @@
+No Azure, a performance de um banco de dados é medida em DTUs - Database Transaction Unit, unidade de transação de banco de dados, (em alguns documentos, você encontrará esta sigla definida como Database Throughput Units - unidades de taxa de transferência de banco de dados).
+
+Podemos variar a quantidade de DTUs em nosso banco de dados sem problemas, esta é uma operação online que não gera indisponibilidade.
+
+Mas, enquanto migramos uma aplicação para a nuvem, é importante ter uma estimativa desta carga antes de lançarmos o produto.
+
+Para ter uma estimativa, você deve utilizar a calculadora de DTUs criada pela Microsoft.
+
+Primeiro você deve medir a utilização de recursos do servidor de banco de dados. Para isto, no site da calculadora, você irá fazer o download do Script PowerShell, serão capturadas várias métricas de desempenho em seu servidor SQL - uso do processador, uso do disco para leitura/escrita e log - durante 1 hora.
+
+Para fornecer a medição mais precisa, você deve executar uma carga de trabalho de produção representativa durante este período.
+
+Feito isto, o arquivo sql-perfmon-log.csv será gerado na raíz do disco C. Fazemos o upload deste arquivo na calculadora e obteremos a estimativa de quantos DTUs serão necessários em nosso banco.
